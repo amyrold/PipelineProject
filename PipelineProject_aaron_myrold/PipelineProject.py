@@ -12,8 +12,8 @@ from Bio import SeqIO
 
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
-# my_env = os.path.join(os.path.dirname(__file__)) 
-my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
+my_env = os.path.join(os.path.dirname(__file__)) 
+#my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
 # set the current working directory to that folder so that remaining paths can function properly
 os.chdir(my_env)
 
@@ -59,7 +59,7 @@ if raw_or_test == 'test':
     os.chdir(p_test)
     for i in accessions:
         if not os.path.isfile(f'{i}_1.fastq.gz'):
-            os.system('fastq-dump -X 10000 --gzip --split-3 --aligned {i}')
+            os.system(f'fastq-dump -X 10000 --gzip --split-3 --aligned {i}')
     # if os.path.isfile('SRR5660030_1.fastq.gz'):
     #     # incase data has already been downloaded
     #     # move sample data to data_raw folder so that downstream code runs smoothly
