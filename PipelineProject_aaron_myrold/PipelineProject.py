@@ -30,6 +30,9 @@ p_test = folder_names[4]
 for i in folder_names:
     if not os.path.exists(i):
         os.makedirs(i)
+        
+# Make accession list ----
+accessions = ['SRR5660030','SRR5660033', 'SRR5660044', 'SRR5660045']
 
 
 # PART 1 ----
@@ -43,9 +46,6 @@ while raw_or_test not in acc_val:
 
 # If we want raw data, download the data
 if raw_or_test == 'raw':
-    # incase switching from test to raw, move test data back to test folder
-    os.system(f'mv {p_data_raw}/*.gz {p_test}')
-    
     # set working directory to data_raw
     os.chdir(p_data_raw)
 
@@ -57,16 +57,20 @@ if raw_or_test == 'raw':
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
     os.chdir(p_test)
-    if os.path.isfile('SRR5660030_1.fastq.gz'):
-        # incase data has already been downloaded
-        # move sample data to data_raw folder so that downstream code runs smoothly
-        os.system(f'mv {p_test}/*.gz {p_data_raw}')
-    else: # otherwise, download the data
-        os.chdir(f'../{p_data_raw}')
-        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
-        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
-        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
-        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
+    for i in accessions:
+        if not os.path.isfile(f'{i}_1.fastq.gz'):
+            os.system('fastq-dump -X 10000 --gzip --split-3 --aligned {i}')
+    # if os.path.isfile('SRR5660030_1.fastq.gz'):
+    #     # incase data has already been downloaded
+    #     # move sample data to data_raw folder so that downstream code runs smoothly
+    #     os.system(f'mv {p_test}/*.gz {p_data_raw}')
+    # else: # otherwise, download the data
+    #     os.chdir(f'../{p_data_raw}')
+    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
+    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
+    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
+    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
+    p_data_raw = p_test
     os.chdir('..') #return to working directory
 
 
