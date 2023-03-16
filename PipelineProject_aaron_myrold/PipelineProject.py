@@ -47,7 +47,7 @@ if raw_or_test == 'raw':
     os.system(f'mv {p_data_raw}/*.gz {p_test}')
     
     # set working directory to data_raw
-    os.chdir('data_raw')
+    os.chdir(p_data_raw)
     
     # download all fastq files from ebi database
     # ebi allows you to download the proccess fastq files directly
@@ -70,7 +70,7 @@ if raw_or_test == 'raw':
     
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
-    os.chdir('data_raw')
+    os.chdir(p_data_raw)
     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
