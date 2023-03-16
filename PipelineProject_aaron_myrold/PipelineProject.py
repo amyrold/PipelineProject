@@ -67,7 +67,7 @@ if raw_or_test == 'raw':
     
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
-    os.system('fastq-dump -X 10 SRR5660030 SRR5660033 SRR5660044 SRR5660045')
+    os.system('fastq-dump -X 10 SRR5660030')
     # move sample data to data_raw folder so that downstream code runs smoothly
     #os.system(f'mv {p_test}/*.gz {p_data_raw}')
 
