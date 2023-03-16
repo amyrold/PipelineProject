@@ -63,11 +63,19 @@ if raw_or_test == 'raw':
     # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_1.fastq.gz')
     # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_2.fastq.gz')
     
-    os.system('fasterq-dump SRR5660030 SRR5660033 SRR5660044 SRR5660045')
+    os.system('fasterq-dump --threads 2 --progress SRR5660030')
+    os.system('fasterq-dump --threads 2 --progress SRR5660033')
+    os.system('fasterq-dump --threads 2 --progress SRR5660044')
+    os.system('fasterq-dump --threads 2 --progress SRR5660045')
     
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
-    os.system('fastq-dump -X 10 SRR5660030')
+    os.chdir('data_raw')
+    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
+    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
+    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
+    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
+    os.chdir('..')
     # move sample data to data_raw folder so that downstream code runs smoothly
     #os.system(f'mv {p_test}/*.gz {p_data_raw}')
 
