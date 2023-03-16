@@ -98,14 +98,14 @@ os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660033_1.fastq.gz -2 {
 os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660044_1.fastq.gz -2 {p_data_raw}/SRR5660044_2.fastq.gz -S {p_data_clean}/HCMVmap_44.sam --al-conc-gz {p_data_clean}/SRR5660044_mapped_%.fq.gz')
 os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {p_data_raw}/SRR5660045_2.fastq.gz -S {p_data_clean}/HCMVmap_45.sam --al-conc-gz {p_data_clean}/SRR5660045_mapped_%.fq.gz')
 
-# # write the number of reads that map before and after bowtie2 to log file
-# # for file in raw, count reads
-# # forloop and count from: https://www.biostars.org/p/139006/
-# os.chdir(p_data_raw)
-# os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
-# # for file in clean, count reads
-# os.chdir(p_data_raw)
-# os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
+# write the number of reads that map before and after bowtie2 to log file
+# for file in raw, count reads
+# forloop and count from: https://www.biostars.org/p/139006/
+os.chdir(p_data_raw)
+os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
+# for file in clean, count reads
+os.chdir(p_data_clean)
+os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 
 
 # PART 3 ----
