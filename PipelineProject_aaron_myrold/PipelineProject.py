@@ -105,7 +105,7 @@ os.chdir(p_data_raw)
 os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 # for file in clean, count reads
 os.chdir(f'../{p_data_clean}')
-os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
+os.system('for i in `ls *.fq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 
 
 # PART 3 ----
