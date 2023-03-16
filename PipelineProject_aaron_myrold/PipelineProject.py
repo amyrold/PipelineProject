@@ -88,8 +88,8 @@ if not os.path.isfile(filename): # To prevent overwriting the file
     out_handle.write(net_handle.read())
     out_handle.close()
     net_handle.close()
-record = SeqIO.read(filename, "fasta") # open file as fasta - i dont think this is needed
-os.system('bowtie2-build NC_006273.2.fasta HCMV')
+if not os.path.isfile('HCMV.1.bt2'): # To prevent duplication of index
+    os.system('bowtie2-build NC_006273.2.fasta HCMV')
 os.chdir('..')
 
 # save only the reads that map
