@@ -12,8 +12,8 @@ from Bio import SeqIO
 
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
-my_env = os.path.join(os.path.dirname(__file__)) 
-# my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
+# my_env = os.path.join(os.path.dirname(__file__)) 
+my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
 # set the current working directory to that folder so that remaining paths can function properly
 os.chdir(my_env)
 
@@ -43,7 +43,7 @@ while raw_or_test not in acc_val:
 
 # If we want raw data, download the data
 if raw_or_test == 'raw':
-    # if switching from test to raw, move test data back to test folder
+    # incase switching from test to raw, move test data back to test folder
     os.system(f'mv {p_data_raw}/*.gz {p_test}')
     
     # set working directory to data_raw
@@ -56,12 +56,13 @@ if raw_or_test == 'raw':
     
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
-    os.chdir(p_data_raw)
-    if not os.path.isfile('SRR5660030_1.fastq.gz'):
+    os.chdir(p_test)
+    if os.path.isfile('SRR5660030_1.fastq.gz'):
         # incase data has already been downloaded
         # move sample data to data_raw folder so that downstream code runs smoothly
         os.system(f'mv {p_test}/*.gz {p_data_raw}')
     else: # otherwise, download the data
+        os.chdir(f'../{p_data_raw}')
         os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
         os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
         os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
