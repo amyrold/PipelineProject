@@ -13,7 +13,7 @@ from Bio import SeqIO
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
 #my_env = os.path.join(os.path.dirname(__file__)) 
-my_env = '/Users/aaronmyrold/Desktop/AM_env/PipelineProject_aaron_myrold'
+my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
 # set the current working directory to that folder so that remaining paths can function properly
 os.chdir(my_env)
 
@@ -51,22 +51,25 @@ if raw_or_test == 'raw':
     
     # download all fastq files from ebi database
     # ebi allows you to download the proccess fastq files directly
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_1.fastq.gz')
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_2.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_1.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_2.fastq.gz')
     
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_1.fastq.gz')
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_2.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_1.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_2.fastq.gz')
     
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_1.fastq.gz')
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_2.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_1.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_2.fastq.gz')
     
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_1.fastq.gz')
-    os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_2.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_1.fastq.gz')
+    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_2.fastq.gz')
+    
+    os.system('fasterq-dump SRR5660030 SRR5660033 SRR5660044 SRR5660045')
     
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
+    os.system('fasterq-dump -X 10 SRR5660030 SRR5660033 SRR5660044 SRR5660045')
     # move sample data to data_raw folder so that downstream code runs smoothly
-    os.system(f'mv {p_test}/*.gz {p_data_raw}')
+    #os.system(f'mv {p_test}/*.gz {p_data_raw}')
 
 
 
