@@ -12,8 +12,8 @@ from Bio import SeqIO
 
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
-#my_env = os.path.join(os.path.dirname(__file__)) 
-my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
+my_env = os.path.join(os.path.dirname(__file__)) 
+# my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
 # set the current working directory to that folder so that remaining paths can function properly
 os.chdir(my_env)
 
