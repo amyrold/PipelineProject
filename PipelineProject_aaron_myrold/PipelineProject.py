@@ -48,21 +48,7 @@ if raw_or_test == 'raw':
     
     # set working directory to data_raw
     os.chdir(p_data_raw)
-    
-    # download all fastq files from ebi database
-    # ebi allows you to download the proccess fastq files directly
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_1.fastq.gz')
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/000/SRR5660030/SRR5660030_2.fastq.gz')
-    
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_1.fastq.gz')
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/003/SRR5660033/SRR5660033_2.fastq.gz')
-    
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_1.fastq.gz')
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/004/SRR5660044/SRR5660044_2.fastq.gz')
-    
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_1.fastq.gz')
-    # os.system('wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR566/005/SRR5660045/SRR5660045_2.fastq.gz')
-    
+
     os.system('fasterq-dump --threads 2 --progress SRR5660030')
     os.system('fasterq-dump --threads 2 --progress SRR5660033')
     os.system('fasterq-dump --threads 2 --progress SRR5660044')
@@ -71,13 +57,17 @@ if raw_or_test == 'raw':
 # If we want test data, move it to correct location
 if raw_or_test == 'test':
     os.chdir(p_data_raw)
-    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
-    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
-    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
-    os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
-    os.chdir('..')
-    # move sample data to data_raw folder so that downstream code runs smoothly
-    #os.system(f'mv {p_test}/*.gz {p_data_raw}')
+    if not os.path.isfile('SRR5660030_1.fastq.gz'):
+        # incase data has already been downloaded
+        # move sample data to data_raw folder so that downstream code runs smoothly
+        os.system(f'mv {p_test}/*.gz {p_data_raw}')
+    else: # otherwise, download the data
+        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
+        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
+        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
+        os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
+    os.chdir('..') #return to working directory
+
 
 
 
