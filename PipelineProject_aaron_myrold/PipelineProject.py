@@ -32,6 +32,7 @@ for i in folder_names:
         os.makedirs(i)
         
 # Make accession list ----
+# these are used to dynamically create test files below
 accessions = ['SRR5660030','SRR5660033', 'SRR5660044', 'SRR5660045']
 
 
@@ -48,60 +49,54 @@ while raw_or_test not in acc_val:
 if raw_or_test == 'raw':
     # set working directory to data_raw
     os.chdir(p_data_raw)
-
+    # this could possibly be done with one line, but did not want to run multiple download tests
+    # if its possible, would work like this:
+    # os.system('fasterq-dump --threads 2 --progress SRR5660030 SRR5660033 SRR5660044 SRR5660045')
     os.system('fasterq-dump --threads 2 --progress SRR5660030')
     os.system('fasterq-dump --threads 2 --progress SRR5660033')
     os.system('fasterq-dump --threads 2 --progress SRR5660044')
     os.system('fasterq-dump --threads 2 --progress SRR5660045')
     
-# If we want test data, move it to correct location
+# If we want test data, create it
 if raw_or_test == 'test':
     os.chdir(p_test)
+    # if the test files do not exist, create them
     for i in accessions:
         if not os.path.isfile(f'{i}_1.fastq.gz'):
             os.system(f'fastq-dump -X 10000 --gzip --split-3 --aligned {i}')
-    # if os.path.isfile('SRR5660030_1.fastq.gz'):
-    #     # incase data has already been downloaded
-    #     # move sample data to data_raw folder so that downstream code runs smoothly
-    #     os.system(f'mv {p_test}/*.gz {p_data_raw}')
-    # else: # otherwise, download the data
-    #     os.chdir(f'../{p_data_raw}')
-    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660030')
-    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660033')
-    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660044')
-    #     os.system('fastq-dump -X 10000 --gzip --split-3 --aligned SRR5660045')
+    # set the p_data_raw path to test data folder
     p_data_raw = p_test
     os.chdir('..') #return to working directory
 
 
 
 
-# # PART 2 ----
-# # Here I download the reference genome (HCMV) in order to build the index for bowtie2
-# # I use the Entrez.efetch() method to download the viral genome
-# # Then I run a bowtie2 command to build the index inside of the 4_index folder
-# os.chdir(p_index)
-# Entrez.email = "amyrold@luc.edu"
-# # code adapted from https://www.biostars.org/p/261774/
-# # code originally from biopython cookbook, wasn't sure which to link so I linked the site I found it from.
-# filename = "NC_006273.2.fasta"
-# if not os.path.isfile(filename): # To prevent overwriting the file
-#     net_handle = Entrez.efetch(
-#         db="nucleotide", id="NC_006273.2", rettype="fasta", retmode="text"
-#     )
-#     out_handle = open(filename, "w")
-#     out_handle.write(net_handle.read())
-#     out_handle.close()
-#     net_handle.close()
-# record = SeqIO.read(filename, "fasta") # open file as fasta - i dont think this is needed
-# os.system('bowtie2-build NC_006273.2.fasta HCMV')
-# os.chdir('..')
+# PART 2 ----
+# Here I download the reference genome (HCMV) in order to build the index for bowtie2
+# I use the Entrez.efetch() method to download the viral genome
+# Then I run a bowtie2 command to build the index inside of the 4_index folder
+os.chdir(p_index)
+Entrez.email = "amyrold@luc.edu"
+# code adapted from https://www.biostars.org/p/261774/
+# code originally from biopython cookbook, wasn't sure which to link so I linked the site I found it from.
+filename = "NC_006273.2.fasta"
+if not os.path.isfile(filename): # To prevent overwriting the file
+    net_handle = Entrez.efetch(
+        db="nucleotide", id="NC_006273.2", rettype="fasta", retmode="text"
+    )
+    out_handle = open(filename, "w")
+    out_handle.write(net_handle.read())
+    out_handle.close()
+    net_handle.close()
+record = SeqIO.read(filename, "fasta") # open file as fasta - i dont think this is needed
+os.system('bowtie2-build NC_006273.2.fasta HCMV')
+os.chdir('..')
 
-# # save only the reads that map
-# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660030_1.fastq.gz -2 {p_data_raw}/SRR5660030_2.fastq.gz -S {p_data_clean}/HCMVmap_30.sam --al-conc-gz {p_data_clean}/SRR5660030_mapped_%.fq.gz')
-# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660033_1.fastq.gz -2 {p_data_raw}/SRR5660033_2.fastq.gz -S {p_data_clean}/HCMVmap_33.sam --al-conc-gz {p_data_clean}/SRR5660033_mapped_%.fq.gz')
-# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660044_1.fastq.gz -2 {p_data_raw}/SRR5660044_2.fastq.gz -S {p_data_clean}/HCMVmap_44.sam --al-conc-gz {p_data_clean}/SRR5660044_mapped_%.fq.gz')
-# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {p_data_raw}/SRR5660045_2.fastq.gz -S {p_data_clean}/HCMVmap_45.sam --al-conc-gz {p_data_clean}/SRR5660045_mapped_%.fq.gz')
+# save only the reads that map
+os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660030_1.fastq.gz -2 {p_data_raw}/SRR5660030_2.fastq.gz -S {p_data_clean}/HCMVmap_30.sam --al-conc-gz {p_data_clean}/SRR5660030_mapped_%.fq.gz')
+os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660033_1.fastq.gz -2 {p_data_raw}/SRR5660033_2.fastq.gz -S {p_data_clean}/HCMVmap_33.sam --al-conc-gz {p_data_clean}/SRR5660033_mapped_%.fq.gz')
+os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660044_1.fastq.gz -2 {p_data_raw}/SRR5660044_2.fastq.gz -S {p_data_clean}/HCMVmap_44.sam --al-conc-gz {p_data_clean}/SRR5660044_mapped_%.fq.gz')
+os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {p_data_raw}/SRR5660045_2.fastq.gz -S {p_data_clean}/HCMVmap_45.sam --al-conc-gz {p_data_clean}/SRR5660045_mapped_%.fq.gz')
 
 # # write the number of reads that map before and after bowtie2 to log file
 # # for file in raw, count reads
