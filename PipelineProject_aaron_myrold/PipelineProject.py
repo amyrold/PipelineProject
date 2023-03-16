@@ -112,13 +112,13 @@ os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {
 # PART 3 ----
 #take the bowtie2 output reads and assemble all four genomes
 # write spades command to output file
-
+os.chdir(p_data_clean)
 p1 = '--pe-1 1 SRR5660030_mapped_1.fq.gz --pe-2 1 SRR5660030_mapped_2.fq.gz'
 p2 = '--pe-1 2 SRR5660033_mapped_1.fq.gz --pe-2 2 SRR5660033_mapped_2.fq.gz'
 p3 = '--pe-1 2 SRR5660044_mapped_1.fq.gz --pe-2 2 SRR5660044_mapped_2.fq.gz'
 p4 = '--pe-1 2 SRR5660045_mapped_1.fq.gz --pe-2 2 SRR5660045_mapped_2.fq.gz'
 
-os.system(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o ../3_output/')
+os.system(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o ../{p_out}/')
 
 # PART 4 ----
 # write python code to calculate the number of contigs > 1000
