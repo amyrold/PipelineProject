@@ -104,7 +104,7 @@ os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {
 os.chdir(p_data_raw)
 os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 # for file in clean, count reads
-os.chdir(p_data_clean)
+os.chdir(f'../{p_data_clean}')
 os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 
 
