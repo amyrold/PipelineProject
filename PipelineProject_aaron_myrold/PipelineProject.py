@@ -129,6 +129,7 @@ os.system(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o 
 # write spades command to output file
 my_log.write(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o ../{p_out}/\n')
 my_log.close()
+os.chdir('..')
 
 # PART 4 ----
 # write python code to calculate the number of contigs > 1000
