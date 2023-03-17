@@ -173,7 +173,7 @@ my_log.write(f'there are {ccount} contigs in the assembly\n')
 # Download betaherpesvirinae seqs
 
 # Make blast database
-os.system('makeblastdb -in {p_blast}/sequence.fasta -out BPvirus -title BPvirus -dbtype nucl')
+os.system('makeblastdb -in {p_blast}/sequence.fasta -out {p_blast}/BPvirus -title BPvirus -dbtype nucl')
 
 # Make blast query
 input_file = f'{p_out}/c_long.fasta'
