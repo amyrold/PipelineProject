@@ -146,7 +146,7 @@ SeqIO.write(c_filt, f'{p_out}/contigs_filt.fasta', 'fasta')
 # Write number of fasta to the log
 my_log = open('PipelineProject.log','w')
 scount = subprocess.check_output(f'grep -c "^>" {p_out}/contigs_filt.fasta', shell=True)
-scount = acount.decode('utf-8').strip('\n')
+# scount = acount.decode('utf-8').strip('\n')
 # write the number of base pairs to the log
 # unix adapted from: https://www.biostars.org/p/78043/#78051
 ccount = subprocess.check_output(f"cat {p_out}/contigs_filt.fasta | paste - - - - | cut -f 2 | tr -d '\n' | wc -c", shell=True)
