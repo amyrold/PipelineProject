@@ -109,7 +109,7 @@ for i in accessions:
     # bcount = os.system(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc')
     # acount = os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc')
     bcount = subprocess.check_output(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc', shell=True)
-    bcount = bcount.strip("b'\n'")
+    bcount = bcount.decode('utf-8')
     acount = subprocess.check_output(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc', shell=True)
     my_log.write(f'{i} had {bcount} read pairs before Bowtie 2 filtering and {acount} read pairs after\n')
     
