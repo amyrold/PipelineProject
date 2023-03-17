@@ -150,7 +150,7 @@ scount = subprocess.check_output(f'grep -c "^>" {p_out}/contigs_filt.fasta', she
 # write the number of base pairs to the log
 # unix adapted from: https://www.biostars.org/p/78043/#78051
 ccount = subprocess.check_output(f"cat {p_out}/contigs_filt.fasta | paste - - - - | cut -f 2 | tr -d '\n' | wc -c", shell=True)
-ccount = acount.decode('utf-8').strip('\n')
+# ccount = acount.decode('utf-8').strip('\n')
 # write both to the log file
 my_log.write(f'there are {scount} contigs > 1000 bp in the assembly')
 my_log.write(f'there are {ccount} contigs in the assembly')
