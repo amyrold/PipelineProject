@@ -136,7 +136,7 @@ if raw_or_test == 'test':
 # cnames = contig_dict.keys()
 
 
-contigs = SeqIO.parse(f'{p_out}/contigs', 'fasta')
+contigs = SeqIO.parse(f'{p_out}/contigs.fasta', 'fasta')
 c_filt = []
 for c in contigs:
     if len(c.seq) >= 1000:
