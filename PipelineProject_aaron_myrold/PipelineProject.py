@@ -178,7 +178,7 @@ os.system(f'makeblastdb -in {p_blast}/sequence.fasta -out {p_blast}/BPvirus -tit
 # Make blast query
 input_file = f'{p_out}/c_long.fasta'
 output_file = f'{p_blast}/myresults.csv'
-os.system(f'blastn -query {input_file} -db BPvirus -out {output_file} -outfmt 10')
+os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt 10')
 
 
 
