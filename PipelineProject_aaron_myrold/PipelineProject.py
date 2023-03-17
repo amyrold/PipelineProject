@@ -144,8 +144,11 @@ os.chdir('..')
 contigs = SeqIO.parse(f'{p_out}/contigs.fasta', 'fasta')
 c_filt = []
 # If the seq length is greater than 1000, store the seq into a new file contig_filt.fasta
-longest = contigs[0]
+start = 0
 for c in contigs:
+    if start ==0:
+        longest = c
+        start +=1
     if len(c.seq) >= 1000:
         c_filt.append(c)
     if len(longest.seq) < len(c.seq):
