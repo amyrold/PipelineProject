@@ -144,11 +144,15 @@ os.chdir('..')
 contigs = SeqIO.parse(f'{p_out}/contigs.fasta', 'fasta')
 c_filt = []
 # If the seq length is greater than 1000, store the seq into a new file contig_filt.fasta
+longest = contigs[0]
 for c in contigs:
     if len(c.seq) >= 1000:
         c_filt.append(c)
+    if len(longest.seq) < len(c.seq):
+        longest = c
         
 SeqIO.write(c_filt, f'{p_out}/contigs_filt.fasta', 'fasta')
+SeqIO.write(longest, f'{p_out}/c_long.fasta', 'fasta')
 # Write number of fasta to the log
 # my_log = open('PipelineProject.log','w')
 scount = subprocess.check_output(f'grep -c "^>" {p_out}/contigs_filt.fasta', shell=True)
@@ -169,7 +173,7 @@ my_log.write(f'there are {ccount} contigs in the assembly\n')
 os.system('makeblastdb -in {p_blast}/sequence.fasta -out BPvirus -title BPvirus -dbtype nucl')
 
 # Make blast query
-input_file = f'{p_out}'
+input_file = f'{p_out}/c_long.fasta'
 output_file = f'{p_blast}/myresults.csv'
 os.system(f'blastn -query {input_file} -db BPvirus -out {output_file} -outfmt 10')
 
