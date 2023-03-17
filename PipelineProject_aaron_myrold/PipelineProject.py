@@ -14,11 +14,13 @@ from Bio import SeqIO
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
 my_env = os.path.join(os.path.dirname(__file__)) 
-#my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
+# my_env = '/Users/aaronmyrold/Desktop/PipelineProject/PipelineProject_aaron_myrold'
 # set the current working directory to that folder so that remaining paths can function properly
 os.chdir(my_env)
 
-# Make directories and paths ----
+
+# PART 0 ----
+# Make directories and paths
 folder_names = ('1_data_raw', '2_data_clean', '3_output', '4_index', '5_data_test')
 p_data_raw = folder_names[0]
 p_data_clean = folder_names[1]
@@ -32,7 +34,7 @@ for i in folder_names:
     if not os.path.exists(i):
         os.makedirs(i)
         
-# Make accession list ----
+# Make accession list
 # these are used to dynamically create test files below
 accessions = ['SRR5660030','SRR5660033', 'SRR5660044', 'SRR5660045']
 
@@ -70,75 +72,79 @@ if raw_or_test == 'test':
     os.chdir('..') #return to working directory
 
 
+# # PART 2 ----
+# # Here I download the reference genome (HCMV) in order to build the index for bowtie2
+# # I use the Entrez.efetch() method to download the viral genome
+# # Then I run a bowtie2 command to build the index inside of the 4_index folder
+# os.chdir(p_index)
+# Entrez.email = "amyrold@luc.edu"
+# # code adapted from https://www.biostars.org/p/261774/
+# # code originally from biopython cookbook, wasn't sure which to link so I linked the site I found it from.
+# filename = "NC_006273.2.fasta"
+# if not os.path.isfile(filename): # To prevent overwriting the file
+#     net_handle = Entrez.efetch(
+#         db="nucleotide", id="NC_006273.2", rettype="fasta", retmode="text"
+#     )
+#     out_handle = open(filename, "w")
+#     out_handle.write(net_handle.read())
+#     out_handle.close()
+#     net_handle.close()
+# if not os.path.isfile('HCMV.1.bt2'): # To prevent duplication of index
+#     os.system('bowtie2-build NC_006273.2.fasta HCMV')
+# os.chdir('..')
 
+# # save only the reads that map
+# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660030_1.fastq.gz -2 {p_data_raw}/SRR5660030_2.fastq.gz -S {p_data_clean}/HCMVmap_30.sam --al-conc-gz {p_data_clean}/SRR5660030_mapped_%.fq.gz')
+# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660033_1.fastq.gz -2 {p_data_raw}/SRR5660033_2.fastq.gz -S {p_data_clean}/HCMVmap_33.sam --al-conc-gz {p_data_clean}/SRR5660033_mapped_%.fq.gz')
+# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660044_1.fastq.gz -2 {p_data_raw}/SRR5660044_2.fastq.gz -S {p_data_clean}/HCMVmap_44.sam --al-conc-gz {p_data_clean}/SRR5660044_mapped_%.fq.gz')
+# os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {p_data_raw}/SRR5660045_2.fastq.gz -S {p_data_clean}/HCMVmap_45.sam --al-conc-gz {p_data_clean}/SRR5660045_mapped_%.fq.gz')
 
-# PART 2 ----
-# Here I download the reference genome (HCMV) in order to build the index for bowtie2
-# I use the Entrez.efetch() method to download the viral genome
-# Then I run a bowtie2 command to build the index inside of the 4_index folder
-os.chdir(p_index)
-Entrez.email = "amyrold@luc.edu"
-# code adapted from https://www.biostars.org/p/261774/
-# code originally from biopython cookbook, wasn't sure which to link so I linked the site I found it from.
-filename = "NC_006273.2.fasta"
-if not os.path.isfile(filename): # To prevent overwriting the file
-    net_handle = Entrez.efetch(
-        db="nucleotide", id="NC_006273.2", rettype="fasta", retmode="text"
-    )
-    out_handle = open(filename, "w")
-    out_handle.write(net_handle.read())
-    out_handle.close()
-    net_handle.close()
-if not os.path.isfile('HCMV.1.bt2'): # To prevent duplication of index
-    os.system('bowtie2-build NC_006273.2.fasta HCMV')
-os.chdir('..')
-
-# save only the reads that map
-os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660030_1.fastq.gz -2 {p_data_raw}/SRR5660030_2.fastq.gz -S {p_data_clean}/HCMVmap_30.sam --al-conc-gz {p_data_clean}/SRR5660030_mapped_%.fq.gz')
-os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660033_1.fastq.gz -2 {p_data_raw}/SRR5660033_2.fastq.gz -S {p_data_clean}/HCMVmap_33.sam --al-conc-gz {p_data_clean}/SRR5660033_mapped_%.fq.gz')
-os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660044_1.fastq.gz -2 {p_data_raw}/SRR5660044_2.fastq.gz -S {p_data_clean}/HCMVmap_44.sam --al-conc-gz {p_data_clean}/SRR5660044_mapped_%.fq.gz')
-os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {p_data_raw}/SRR5660045_2.fastq.gz -S {p_data_clean}/HCMVmap_45.sam --al-conc-gz {p_data_clean}/SRR5660045_mapped_%.fq.gz')
-
-# write the number of reads that map before and after bowtie2 to log file
-# for file in raw, count reads
-
-my_log = open('PipelineProject.log','w')
-for i in accessions:
+# # write the number of reads that map before and after bowtie2 to log file
+# my_log = open('PipelineProject.log','w')
+# for i in accessions:
+#     # loop through accessions and count read pairs from before and after
+#     # the counting method is basically dividing number of lines by 4, from here: https://www.biostars.org/p/139006/
+#     # the subprocess method comes from this thread: https://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
+#     # it allows me to use the command line to count number of reads from each set of files
+#     # need to decode the output and remove newline character
+#     bcount = subprocess.check_output(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc', shell=True)
+#     bcount = bcount.decode('utf-8').strip('\n')
+#     acount = subprocess.check_output(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc', shell=True)
+#     acount = acount.decode('utf-8').strip('\n')
+#     # write to output file
+#     my_log.write(f'{i} had {bcount} read pairs before Bowtie 2 filtering and {acount} read pairs after\n')
     
-    bcount = subprocess.check_output(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc', shell=True)
-    bcount = bcount.decode('utf-8').strip('\n')
-    acount = subprocess.check_output(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc', shell=True)
-    acount = acount.decode('utf-8').strip('\n')
-    my_log.write(f'{i} had {bcount} read pairs before Bowtie 2 filtering and {acount} read pairs after\n')
-    
-    
-
-
-# # forloop and count from: https://www.biostars.org/p/139006/
-# os.chdir(p_data_raw)
-# os.system('for i in `ls *.fastq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
-# # for file in clean, count reads
-# os.chdir(f'../{p_data_clean}')
-# os.system('for i in `ls *.fq.gz`; do echo $(zcat ${i} | wc -l)/4|bc; done')
 
 
 # # PART 3 ----
 # #take the bowtie2 output reads and assemble all four genomes
-# # write spades command to output file
 # os.chdir(p_data_clean)
+# # store the individual sub-pairs that will be used for the final SPAdes command
 # p1 = '--pe-1 1 SRR5660030_mapped_1.fq.gz --pe-2 1 SRR5660030_mapped_2.fq.gz'
 # p2 = '--pe-1 2 SRR5660033_mapped_1.fq.gz --pe-2 2 SRR5660033_mapped_2.fq.gz'
 # p3 = '--pe-1 2 SRR5660044_mapped_1.fq.gz --pe-2 2 SRR5660044_mapped_2.fq.gz'
 # p4 = '--pe-1 2 SRR5660045_mapped_1.fq.gz --pe-2 2 SRR5660045_mapped_2.fq.gz'
-
+# # use an f-string to call the correct SPAdes command to create the whole assembly
 # os.system(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o ../{p_out}/')
-
-
-
+# # write spades command to output file
+# my_log.write(f'spades.py -k 77,99,127 -t 2 --only-assembler {p1} {p2} {p3} {p4} -o ../{p_out}/\n')
+# my_log.close()
 
 # PART 4 ----
 # write python code to calculate the number of contigs > 1000
-#
+# contig_dict = IO.to_dict(IO.parse(f'{p_out}/contigs.fasta', 'fasta'))
+# cnames = contig_dict.keys()
+
+
+contigs = SeqIO.parse(f'{p_out}/contigs', 'fasta')
+c_filt = []
+for c in contigs:
+    if len(c.seq) >= 1000:
+        c_filt.append(c)
+        
+SeqIO.write(c_filt, f'{p_out}/contigs_filt.fasta', 'fasta')
+    
+    
 
 
 # PART 5 ----
