@@ -10,6 +10,7 @@ import os
 import subprocess
 from Bio import Entrez
 from Bio import SeqIO
+# from Bio.Blast import NCBIWWW
 
 # determine the path of the directory this file is located in
 # idea taken from here: https://www.pythonanywhere.com/forums/topic/13464/
@@ -21,12 +22,13 @@ os.chdir(my_env)
 
 # PART 0 ----
 # Make directories and paths
-folder_names = ('1_data_raw', '2_data_clean', '3_output', '4_index', '5_data_test')
+folder_names = ('1_data_raw', '2_data_clean', '3_output', '4_index', '5_data_test', '6_blast')
 p_data_raw = folder_names[0]
 p_data_clean = folder_names[1]
 p_out = folder_names[2]
 p_index = folder_names[3]
 p_test = folder_names[4]
+p_blast = folder_names[5]
 
 # this is primarily due to github not saving empty directories
 # need to be able to create folder structure from scratch if needed  
@@ -55,10 +57,13 @@ if raw_or_test == 'raw':
     # this could possibly be done with one line, but did not want to run multiple download tests
     # if its possible, would work like this:
     # os.system('fasterq-dump --threads 2 --progress SRR5660030 SRR5660033 SRR5660044 SRR5660045')
-    os.system('fasterq-dump --threads 2 --progress SRR5660030')
-    os.system('fasterq-dump --threads 2 --progress SRR5660033')
-    os.system('fasterq-dump --threads 2 --progress SRR5660044')
-    os.system('fasterq-dump --threads 2 --progress SRR5660045')
+    for i in accessions:
+        if not os.path.isfile(f'{i}_1.fastq.gz'):
+            os.system(f'fasterq-dump --threads 2 --progress {i}')
+    # os.system('fasterq-dump --threads 2 --progress SRR5660033')
+    # os.system('fasterq-dump --threads 2 --progress SRR5660044')
+    # os.system('fasterq-dump --threads 2 --progress SRR5660045')
+    os.chdir('..')
     
 # If we want test data, create it
 if raw_or_test == 'test':
@@ -157,7 +162,15 @@ my_log.write(f'there are {ccount} contigs in the assembly\n')
 
 
 # PART 5 ----
+# Download betaherpesvirinae seqs
 
+# Make blast database
+os.system('makeblastdb -in {p_blast}/sequence.fasta -out BPvirus -title BPvirus -dbtype nucl')
+
+# Make blast query
+input_file = f'{p_out}'
+output_file = f'{p_blast}/myresults.csv'
+os.system(f'blastn -query {input_file} -db BPvirus -out {output_file} -outfmt 10')
 
 
 
