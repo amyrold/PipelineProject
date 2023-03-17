@@ -102,14 +102,15 @@ os.system(f'bowtie2 -x {p_index}/HCMV -1 {p_data_raw}/SRR5660045_1.fastq.gz -2 {
 # for file in raw, count reads
 
 my_log = open('PipelineProject.log','w')
-bcount = {}
-acount = {}
+# bcount = {}
+# acount = {}
 for i in accessions:
-    bcount[i] = os.system(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc')
-    acount[i] = os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc')
+    bcount = os.system(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc') + os.system(f'echo $(zcat {p_data_raw}/{i}_2.fastq.gz|wc -l)/4|bc')
+    acount = os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc') + os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_2.fq.gz|wc -l)/4|bc')
+    my_log.write(f'{i} had {bcount} read pairs before Bowtie 2 filtering and {acount} read pairs after')
     
-my_log.write(bcount[accessions[0]])
-my_log.write(acount[[accessions[0]]])
+    
+
 
 # # forloop and count from: https://www.biostars.org/p/139006/
 # os.chdir(p_data_raw)
