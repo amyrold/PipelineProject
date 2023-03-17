@@ -60,10 +60,6 @@ if raw_or_test == 'raw':
     for i in accessions:
         if not os.path.isfile(f'{i}_1.fastq.gz'):
             os.system(f'fastq-dump --gzip --split-3 --aligned {i}')
-            # os.system(f'fasterq-dump --threads 2 --progress {i}')
-    # os.system('fasterq-dump --threads 2 --progress SRR5660033')
-    # os.system('fasterq-dump --threads 2 --progress SRR5660044')
-    # os.system('fasterq-dump --threads 2 --progress SRR5660045')
     os.chdir('..')
     
 # If we want test data, create it
