@@ -106,10 +106,10 @@ bcount = {}
 acount = {}
 for i in accessions:
     bcount[i] = os.system(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc')
-    acount[i] = os.system(f'echo $(zcat {p_data_clean}/{i}_1.fq.gz|wc -l)/4|bc')
+    acount[i] = os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc')
     
-my_log.write(bcount)
-my_log.write(acount)
+my_log.write(bcount[accessions[0]])
+my_log.write(acount[[accessions[0]]])
 
 # # forloop and count from: https://www.biostars.org/p/139006/
 # os.chdir(p_data_raw)
