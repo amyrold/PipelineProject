@@ -108,7 +108,7 @@ my_log = open('PipelineProject.log','w')
 for i in accessions:
     # bcount = os.system(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc')
     # acount = os.system(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc')
-    trial = subprocess.popen(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc', stdout=subprocess.PIPE, shell=True)
+    trial = subprocess.Popen(f'echo $(zcat {p_data_raw}/{i}_1.fastq.gz|wc -l)/4|bc', stdout=subprocess.PIPE, shell=True)
     (bcount, err) = trial.communicate()
     acount = subprocess.check_output(f'echo $(zcat {p_data_clean}/{i}_mapped_1.fq.gz|wc -l)/4|bc', shell=True)
     my_log.write(f'{i} had {bcount} read pairs before Bowtie 2 filtering and {acount} read pairs after\n')
