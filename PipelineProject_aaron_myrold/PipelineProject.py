@@ -168,7 +168,7 @@ my_log.write(f'there are {ccount} contigs in the assembly\n')
 # PART 5 ----
 # Download betaherpesvirinae seqs
 # Find entries matching the query
-entrezQuery = "refseq[filter] AND txid10357[ORGN:exp]"
+entrezQuery = "txid10357[ORGN:exp]"
 os.system(f'esearch -db nucleotide -query "{entrezQuery}" | efetch -format fasta > {p_blast}/blast.fasta')
 
 # Make blast database
