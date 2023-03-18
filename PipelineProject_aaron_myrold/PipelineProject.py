@@ -167,14 +167,20 @@ my_log.write(f'there are {ccount} contigs in the assembly\n')
 
 # PART 5 ----
 # Download betaherpesvirinae seqs
+# Find entries matching the query
+entrezQuery = "refseq[filter] AND txid10357[ORGN:exp]"
+os.system(f'esearch -db nucleotide -query "{entrezQuery}" | efetch -format fasta > {p_blast}/blast.fasta')
 
 # Make blast database
-os.system(f'makeblastdb -in {p_blast}/sequence.fasta -out {p_blast}/BPvirus -title BPvirus -dbtype nucl')
+os.system(f'makeblastdb -in {p_blast}/blast.fasta -out {p_blast}/BPvirus -title BPvirus -dbtype nucl')
 
 # Make blast query
 input_file = f'{p_out}/c_long.fasta'
 output_file = f'{p_blast}/myresults.csv'
-os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt 10')
+formatting = '10 sacc pident length qstart qend sstart send bitscore evalue stitle'
+os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt {formatting}')
+
+
 
 
 
