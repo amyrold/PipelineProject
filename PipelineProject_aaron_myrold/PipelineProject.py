@@ -180,7 +180,9 @@ output_file = f'{p_blast}/myresults.csv'
 formatting = '10 sacc pident length qstart qend sstart send bitscore evalue stitle'
 os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt "{formatting}"')
 
-
+# output to the log file
+my_log.write(formatting[2:].replace(' ', ','))
+os.system(f'head {output_file} >> PipelineProject.log')
 
 
 
