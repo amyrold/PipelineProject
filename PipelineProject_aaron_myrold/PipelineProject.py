@@ -177,7 +177,7 @@ os.system(f'makeblastdb -in {p_blast}/blast.fasta -out {p_blast}/BPvirus -title 
 # Make blast query
 input_file = f'{p_out}/c_long.fasta'
 output_file = f'{p_blast}/myresults.csv'
-formatting = '10 sacc pident length qstart qend sstart send bitscore evalue stitle'
+formatting = '10 pident length qstart qend sstart send bitscore evalue stitle'
 os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt {formatting}')
 
 
