@@ -2,7 +2,7 @@
 # Packages needed:
 1. Bowtie2
 2. SPAdes
-3. Biopython
+3. Biopython (for entrez)
 4. python import of "os" (done via script)
 5. python import of subprocess (done via script)
 
