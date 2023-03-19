@@ -8,6 +8,7 @@
 
 # Comments about pipeline
 The whole script is self-contained. PipelineProject.py can be run from any directory and will be able to create necessary folders, download raw or test data, and perform required analyses. There is test data provided in the github repo with appropriate relative pathing, whether it is downloaded or not, the pipeline will run as expected. When you run the file, it will prompt "raw" or "test" to determine which data to download/use. From there, everything else will be performed automatically. 
+Additionally, the PipelineProject.log file posted to this repo was generated using the full raw dataset and contains all requests from the guidline doc. The code will generate a new PipelineProject.log file that is formatted the same. Resuts will depend on whether it is a "raw" or "test" run. 
 
 # Prep:
 - clone github repo
