@@ -1,0 +1,18 @@
+SRR5660030 had 2259287 read pairs before Bowtie 2 filtering and 778847 read pairs after
+SRR5660033 had 2004530 read pairs before Bowtie 2 filtering and 567014 read pairs after
+SRR5660044 had 2730258 read pairs before Bowtie 2 filtering and 932657 read pairs after
+SRR5660045 had 2476889 read pairs before Bowtie 2 filtering and 617925 read pairs after
+spades.py -k 77,99,127 -t 2 --only-assembler --pe-1 1 SRR5660030_mapped_1.fq.gz --pe-2 1 SRR5660030_mapped_2.fq.gz --pe-1 2 SRR5660033_mapped_1.fq.gz --pe-2 2 SRR5660033_mapped_2.fq.gz --pe-1 2 SRR5660044_mapped_1.fq.gz --pe-2 2 SRR5660044_mapped_2.fq.gz --pe-1 2 SRR5660045_mapped_1.fq.gz --pe-2 2 SRR5660045_mapped_2.fq.gz -o ../3_output/
+there are 48 contigs > 1000 bp in the assembly
+there are 41841 contigs in the assembly
+sacc	pident	length	qstart	qend	sstart	send	bitscore	evalue	stitle
+KF297339.1	100.000	18231	1	18231	138616	120386	33667	0.0	KF297339.1 Human herpesvirus 5 strain TB40/E clone Lisa	 complete genome
+JX512204.1	100.000	18231	1	18231	138028	119798	33667	0.0	JX512204.1 Human herpesvirus 5 strain HAN16	 complete genome
+EF999921.1	100.000	18231	1	18231	170657	152427	33667	0.0	EF999921.1 Human herpesvirus 5 strain TB40/E clone TB40-BAC4	 complete sequence
+MT070140.1	100.000	18231	1	18231	138387	120157	33667	0.0	MT070140.1 UNVERIFIED: Human betaherpesvirus 5 isolate P10 chromosome 1	 complete genome
+MW439038.1	100.000	18231	1	18231	138015	119785	33667	0.0	MW439038.1 Human betaherpesvirus 5 strain TB40/EF	 complete genome
+MW439039.1	100.000	18231	1	18231	138015	119785	33667	0.0	MW439039.1 Human betaherpesvirus 5 strain TB40/EE	 complete genome
+MT044484.1	99.989	18231	1	18231	137968	119738	33656	0.0	MT044484.1 Human betaherpesvirus 5 strain HAN-SOT4	 complete genome
+KX544839.1	99.951	18231	1	18231	170612	152388	33611	0.0	KX544839.1 Human betaherpesvirus 5 isolate TB40-E_UNC	 complete genome
+MT044481.1	99.775	18231	1	18231	138216	119988	33438	0.0	MT044481.1 Human betaherpesvirus 5 strain GLA-SOT2	 complete genome
+KP745712.1	99.583	18232	1	18231	137942	119714	33244	0.0	KP745712.1 Human herpesvirus 5 strain BE/19/2010	 complete genome
