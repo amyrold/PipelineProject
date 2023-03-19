@@ -182,7 +182,8 @@ formatting = '10 sacc pident length qstart qend sstart send bitscore evalue stit
 os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt "{formatting}"')
 
 # output to the log file
-my_log.write(formatting[2:].replace(' ', '\t') + '\n')
+my_log.write(formatting[3:].replace(' ', '\t') + '\n')
+my_log.close()
 # convert the csv to tsv and append to PipelineProjet.log
 os.system(f'head {output_file} |sed "s/,/\t/g" >> PipelineProject.log')
 
@@ -190,4 +191,3 @@ os.system(f'head {output_file} |sed "s/,/\t/g" >> PipelineProject.log')
 
 
 
-my_log.close()
