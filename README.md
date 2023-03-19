@@ -8,9 +8,10 @@
 
 # Prep:
 - clone github repo
-- only thing of note is that the blast+ fasta has not been automated so make sure folder 6_blast contains sequence.fasta
+- test data is provided in the github repo
+- code is built to accommodate
 
 # Code usage:
-- run "python3 PipelineProject.py" from within PipelineProject_aaron_myrold
+- 
 - you will be prompted for "test" or "raw" (choose test)
 - everything else will be carried out by the script. 
