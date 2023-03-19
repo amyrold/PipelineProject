@@ -172,7 +172,7 @@ entrezQuery = "txid10357[ORGN:exp]"
 os.system(f'esearch -db nucleotide -query "{entrezQuery}" | efetch -format fasta > {p_blast}/blast.fasta')
 
 # Make blast database
-os.system(f'makeblastdb -in {p_blast}/blast.fasta -out {p_blast}/BPvirus -title BPvirus -dbtype nucl')
+# os.system(f'makeblastdb -in {p_blast}/blast.fasta -out {p_blast}/BPvirus -title BPvirus -dbtype nucl')
 
 # Make blast query
 input_file = f'{p_out}/c_long.fasta'
@@ -181,8 +181,8 @@ formatting = '10 sacc pident length qstart qend sstart send bitscore evalue stit
 os.system(f'blastn -query {input_file} -db {p_blast}/BPvirus -out {output_file} -outfmt "{formatting}"')
 
 # output to the log file
-my_log.write(formatting[2:].replace(' ', '    '))
-os.system(f'head {output_file} >> PipelineProject.log')
+my_log.write(formatting[2:].replace(' ', '\t') + '\n')
+os.system(f'head {output_file} |sed "s/,/\t/g" >> PipelineProject.log')
 
 
 
